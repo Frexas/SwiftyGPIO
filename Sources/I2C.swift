@@ -111,7 +111,7 @@ public final class SysFSI2C: I2CInterface {
             perror("I2C read failed")
             abort()
         }
-        return UInt8(truncatingBitPattern: r)
+        return UInt8(truncatingIfNeeded: r)
     }
 
     public func readByte(_ address: Int, command: UInt8) -> UInt8 {
@@ -123,7 +123,7 @@ public final class SysFSI2C: I2CInterface {
             perror("I2C read failed")
             abort()
         }
-        return UInt8(truncatingBitPattern: r)
+        return UInt8(truncatingIfNeeded: r)
     }
 
     public func readWord(_ address: Int, command: UInt8) -> UInt16 {
@@ -135,7 +135,7 @@ public final class SysFSI2C: I2CInterface {
             perror("I2C read failed")
             abort()
         }
-        return UInt16(truncatingBitPattern: r)
+        return UInt16(truncatingIfNeeded: r)
     }
 
     public func readData(_ address: Int, command: UInt8) -> [UInt8] {
