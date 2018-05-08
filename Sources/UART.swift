@@ -112,6 +112,7 @@ public enum StopBits {
 }
 
 public enum UARTSpeed {
+    case S1200
     case S2400
     case S4800
     case S9600
@@ -122,6 +123,9 @@ public enum UARTSpeed {
 
     public func configure(_ cfg: inout termios) {
         switch self {
+        case .S1200:
+            cfsetispeed(&cfg, speed_t(B1200))
+            cfsetospeed(&cfg, speed_t(B1200))
         case .S2400:
             cfsetispeed(&cfg, speed_t(B2400))
             cfsetospeed(&cfg, speed_t(B2400))
