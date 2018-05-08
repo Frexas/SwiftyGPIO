@@ -170,8 +170,8 @@ fileprivate extension GPIO {
     func writeToFile(_ path: String, value: String) {
         let fp = fopen(path, "w")
         if fp != nil {
-            let ret = fwrite(value, MemoryLayout<CChar>.stride, value.characters.count, fp)
-            if ret<value.characters.count {
+            let ret = fwrite(value, MemoryLayout<CChar>.stride, value.count, fp)
+            if ret < value.count {
                 if ferror(fp) != 0 {
                     perror("Error while writing to file")
                     abort()
@@ -199,7 +199,7 @@ fileprivate extension GPIO {
             //Remove the trailing \n
             buf[len-1]=0
             res = String.init(validatingUTF8: buf)
-            buf.deallocate(capacity: MAXLEN)
+            buf.deallocate()
         }
         return res
     }
@@ -218,7 +218,7 @@ fileprivate extension GPIO {
             var buf: [Int8] = [0, 0, 0] //Dummy read to discard current value
             read(fp, &buf, 3)
 
-            var pfd = pollfd(fd:fp, events:Int16(truncatingBitPattern:POLLPRI), revents:0)
+            var pfd = pollfd(fd:fp, events:Int16(truncatingIfNeeded:POLLPRI), revents:0)
 
             while self.listening {
                 let ready = poll(&pfd, 1, -1)
